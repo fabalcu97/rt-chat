@@ -1,13 +1,18 @@
 <script lang="ts">
+  import { isLoading } from '$lib/loader';
   import { userCollection } from '$lib/pocketbase/auth';
+  import { successToast } from '$lib/toast';
+  import Input from '../../components/Input.svelte';
   import Container from '../../components/container.svelte';
 
   let username = '';
   let email = '';
   let password = '';
   let passwordConfirm = '';
+  let registerErrors: Record<string, { message: string }> = {};
 
-  export async function register() {
+  async function register() {
+    isLoading.set(true);
     const data = {
       username,
       email,
@@ -16,8 +21,15 @@
       passwordConfirm,
     };
 
-    userCollection.create(data);
-    userCollection.authWithPassword(email, password);
+    try {
+      await userCollection.create(data);
+      await userCollection.authWithPassword(email, password);
+      successToast('Welcome!');
+    } catch (error) {
+      registerErrors = (error as any).response.data;
+    } finally {
+      isLoading.set(false);
+    }
   }
 </script>
 
@@ -25,31 +37,31 @@
   <Container>
     <h2 class="text-center my-5">Welcome!</h2>
     <form on:submit|preventDefault={register} class="h-full flex flex-col p-10">
-      <input
+      <Input
         required
         bind:value={username}
-        class="mb-5 border-2 rounded-lg pl-5"
         placeholder="Username"
+        error={registerErrors['username']}
       />
-      <input
+      <Input
         required
         bind:value={email}
-        class="mb-5 border-2 rounded-lg pl-5"
         placeholder="Email"
+        error={registerErrors['email']}
       />
-      <input
+      <Input
         required
         bind:value={password}
-        class="mb-5 border-2 rounded-lg pl-5"
         placeholder="Password"
         type="password"
+        error={registerErrors['password']}
       />
-      <input
+      <Input
         required
         bind:value={passwordConfirm}
-        class="mb-5 border-2 rounded-lg pl-5"
         placeholder="Confirm Password"
         type="password"
+        error={registerErrors['passwordConfirm']}
       />
       <button
         type="submit"

@@ -1,4 +1,8 @@
-<span class="loader" />
+<div class="absolute inset-0 bg-gray-100 z-10">
+  <div class="flex justify-center items-center h-screen">
+    <span class="loader" />
+  </div>
+</div>
 
 <style>
   .loader {

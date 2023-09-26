@@ -14,11 +14,11 @@
   });
 </script>
 
-<div>
+<div class="relative">
+  <slot />
+
   {#if $isLoading}
     <Loader />
-  {:else}
-    <slot />
   {/if}
   <SvelteToast />
 </div>
