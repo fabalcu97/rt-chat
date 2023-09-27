@@ -14,6 +14,7 @@
   } from '$lib/pocketbase/messages';
   import Container from './container.svelte';
   import type { Message } from '$lib/pocketbase/types';
+  import ChatBubble from './chatBubble.svelte';
 
   let messages: Message[] = [];
   let unsubscribe: () => void;
@@ -69,33 +70,9 @@
   >
     {#each messages as message (message.id)}
       {#if message.user.id === $currentUser?.id}
-        <div class="flex flex-row items-center">
-          <div
-            class=" break-words text-right rounded-full bg-emerald-200 m-1 ml-10 px-2 basis-11/12"
-          >
-            {message.text}
-          </div>
-          <img
-            class="h-5 w-5 basis-1/12"
-            src="https://api.dicebear.com/7.x/rings/svg?seed={message.user
-              .id}&size=20"
-            alt="avatar"
-          />
-        </div>
+        <ChatBubble {message} own />
       {:else}
-        <div class="flex flex-row items-center">
-          <img
-            class="h-5 w-5 basis-1/12"
-            src="https://api.dicebear.com/7.x/rings/svg?seed={message.user
-              .id}&size=20"
-            alt="avatar"
-          />
-          <div
-            class="basis-11/12 break-words rounded-full bg-stone-200 m-1 mr-10 px-2"
-          >
-            {message.text}
-          </div>
-        </div>
+        <ChatBubble {message} />
       {/if}
     {/each}
   </div>
@@ -112,9 +89,6 @@
 </Container>
 
 <style lang="postcss">
-  * {
-    /* outline: 1px solid red; */
-  }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

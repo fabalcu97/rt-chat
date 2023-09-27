@@ -14,13 +14,12 @@
     isLoading.set(true);
     try {
       await pb.collection('users').authWithPassword(email, password);
+      goto('/chat');
       successToast('Welcome!');
-    } catch (error) {
-      console.error(error);
-      errorToast('Something went wrong');
+    } catch (error: any) {
+      errorToast(error.response.message);
     } finally {
       isLoading.set(false);
-      goto('/chat');
     }
   }
 </script>

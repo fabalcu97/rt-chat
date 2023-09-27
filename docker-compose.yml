@@ -7,4 +7,5 @@ services:
     ports:
       - 8090:80
     volumes:
-      - ./pocketbase/data:/pb_data
+      - ./pb_data:/pb_data
+      - ./pb_hooks:/pb_hooks

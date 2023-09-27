@@ -1,4 +1,4 @@
-import { get, writable } from 'svelte/store';
+import { get } from 'svelte/store';
 
 import { errorToast } from '$lib/toast';
 import type { Message } from '$lib/pocketbase/types';
@@ -18,9 +18,12 @@ export async function getMessages() {
       ...m,
       user: { username: m.expand.sentBy.username, id: m.expand.sentBy.id },
     }));
-  } catch (error) {
-    console.error(error);
-    errorToast(error.message);
+  } catch (error: any) {
+    if (error.originalError.code === 20) {
+      return [];
+    }
+    console.error({ error });
+    errorToast('Something went wrong, please try again');
     return [];
   }
 }
@@ -32,7 +35,6 @@ export async function createMessage(text: string) {
       text,
     });
   } catch (error) {
-    console.error(error);
-    errorToast(error.message);
+    errorToast('Something went wrong, please try again');
   }
 }
