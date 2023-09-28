@@ -1,11 +1,14 @@
 <script>
   import { isLoading } from '$lib/loader';
   import { onMount } from 'svelte';
-  import '../app.css';
-  import Loader from '../components/loader.svelte';
   import { SvelteToast } from '@zerodevx/svelte-toast';
   import { currentUser } from '$lib/pocketbase/auth';
   import { goto } from '$app/navigation';
+  import '../app.css';
+  import Loader from '../components/loader.svelte';
+  import SvelteLogo from '../assets/icons/svelte.svelte';
+  import Pocketbase from '../assets/icons/pocketbase.svelte';
+  import Tailwindcss from '../assets/icons/tailwindcss.svelte';
 
   onMount(() => {
     if (!$currentUser) {
@@ -14,17 +17,38 @@
   });
 </script>
 
-<div class="relative">
+<main class="flex">
   <slot />
+</main>
+<footer
+  class="invisible hidden sm:visible sm:flex text-center justify-center items-center text-sm"
+>
+  Built with &nbsp; <a target="_blank" href="https://kit.svelte.dev"
+    ><SvelteLogo /></a
+  >
+  &nbsp;
+  <a target="_blank" href="https://pocketbase.io"><Pocketbase /></a>
+  &nbsp;
+  <a target="_blank" href="https://tailwindcss.com"><Tailwindcss /></a>
+</footer>
 
-  {#if $isLoading}
-    <Loader />
-  {/if}
-  <SvelteToast />
-</div>
+{#if $isLoading}
+  <Loader />
+{/if}
+<SvelteToast />
 
 <style lang="postcss">
-  :global(html) {
-    background-color: theme(colors.gray.100);
+  main {
+    @media (min-width: 640px) {
+      height: calc(100vh - 50px);
+    }
+    height: 100vh;
+  }
+  footer {
+    height: 50px;
+  }
+
+  a {
+    cursor: pointer;
   }
 </style>
