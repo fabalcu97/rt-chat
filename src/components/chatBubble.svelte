@@ -3,11 +3,13 @@
   export let own: boolean = false;
 </script>
 
-<div class="flex {own ? 'flex-row' : 'flex-row-reverse'} items-center">
+<div
+  class="flex {own ? 'flex-row' : 'flex-row-reverse'} items-center justify-end"
+>
   <div
     class="rounded-md {own ? 'bg-emerald-200' : 'bg-stone-200'} m-1 {own
       ? 'ml-16'
-      : 'mr-16'} px-2 py-1 basis-11/12 flex flex-col"
+      : 'mr-16'} px-2 py-1 min-w-[25%] max-w-[70%] flex flex-col"
   >
     <span class="break-words text-justify">
       {message.text}
