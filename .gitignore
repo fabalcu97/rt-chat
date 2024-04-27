@@ -12,3 +12,6 @@ vite.config.ts.timestamp-*
 pb_data
 .env 
 !.env.example
+
+.idea
+.vercel
